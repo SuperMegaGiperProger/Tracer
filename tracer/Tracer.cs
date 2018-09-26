@@ -7,35 +7,41 @@ namespace tracer
 {
     public class Tracer : ITracer
     {
-        private Stopwatch stopwatch;
-        private TraceResultBuilder traceResultBuilder;
-        
-        public Tracer() {}
-        
-        public void StartTrace()
+        private Stopwatch _stopwatch;
+        private readonly TraceResultBuilder _traceResultBuilder;
+        private static int CurrThreadId => Thread.CurrentThread.ManagedThreadId;
+
+        public Tracer()
         {
-            traceResultBuilder = new TraceResultBuilder();
-            getParentMethodInfo();
-            stopwatch = Stopwatch.StartNew();
+            _traceResultBuilder = new TraceResultBuilder();
         }
 
-        private void getParentMethodInfo()
+        public void StartTrace()
         {
-            MethodBase methodInfo = new StackTrace().GetFrame(2).GetMethod();
-            traceResultBuilder.methodName = methodInfo.Name;
-            traceResultBuilder.className = methodInfo.DeclaringType.ToString();
-            traceResultBuilder.threadId = Thread.CurrentThread.ManagedThreadId;
+            _stopwatch = Stopwatch.StartNew();
         }
+
+        private MethodTraceResultBuilder GetMethodTraceResultBuilder(MethodBase methodInfo)
+        {
+            var methodName = methodInfo.Name;
+            var className = methodInfo.DeclaringType.ToString();
+            MethodTraceResultBuilder methodThreadResultBuilder = new MethodTraceResultBuilder(methodName, className);
+            ThreadTraceResultBuilder.MethodTraceResultBuilders.Add(methodThreadResultBuilder);
+            return methodThreadResultBuilder;
+        }
+
+        private ThreadTraceResultBuilder ThreadTraceResultBuilder =>
+            _traceResultBuilder.ThreadTraceResultBuilders.GetOrAdd(CurrThreadId, new ThreadTraceResultBuilder());
 
         public void StopTrace()
         {
-            stopwatch.Stop();
-            traceResultBuilder.elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
+            _stopwatch.Stop();
+            GetMethodTraceResultBuilder(new StackTrace().GetFrame(1).GetMethod()).Time = _stopwatch.ElapsedMilliseconds;
         }
 
         public TraceResult GetTraceResult()
         {
-            return traceResultBuilder.TraceResult;
+            return _traceResultBuilder.TraceResult;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace tracer
@@ -6,21 +7,18 @@ namespace tracer
     [DataContract]
     public class TraceResult
     {
-        [DataMember(Name = "name")]
-        public readonly string MethodName;
-        [DataMember(Name = "class")]
-        public readonly string ClassName;
-        [DataMember(Name = "time")]
-        public readonly long TimeSpent;
-        [DataMember(Name = "thread_id")]
-        public readonly int ThreadId;
+        [DataMember(Name = "treads")]
+        public readonly ThreadTraceResult[] ThreadTraceResults;
 
-        public TraceResult(string methodName, string className, long timeSpent, int threadId)
+        public TraceResult(TraceResultBuilder builder)
         {
-            MethodName = methodName;
-            ClassName = className;
-            TimeSpent = timeSpent;
-            ThreadId = threadId;
+            ThreadTraceResults = GetThreadTraceResults(builder);
+        }
+
+        private static ThreadTraceResult[] GetThreadTraceResults(TraceResultBuilder builder)
+        {
+            return builder.ThreadTraceResultBuilders.Select((threadIdResultPair) =>
+                new ThreadTraceResult(threadIdResultPair.Key, threadIdResultPair.Value)).ToArray();
         }
     }
 }

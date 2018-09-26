@@ -1,11 +1,16 @@
+using System.Collections.Concurrent;
+
 namespace tracer
 {
     public class TraceResultBuilder
     {
-        public string methodName, className;
-        public long elapsedMilliseconds;
-        public int threadId;
+        public ConcurrentDictionary<int, ThreadTraceResultBuilder> ThreadTraceResultBuilders;
 
-        public TraceResult TraceResult => new TraceResult(methodName, className, elapsedMilliseconds, threadId);
+        public TraceResult TraceResult => new TraceResult(this);
+
+        public TraceResultBuilder()
+        {
+            ThreadTraceResultBuilders = new ConcurrentDictionary<int, ThreadTraceResultBuilder>();
+        }
     }
 }
