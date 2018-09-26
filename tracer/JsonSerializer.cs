@@ -18,6 +18,11 @@ namespace tracer
             return Encoding.ASCII.GetString(ms.ToArray());
         }
 
+        public string FileType()
+        {
+            return "json";
+        }
+
         private static DataContractJsonSerializerSettings Settings => new DataContractJsonSerializerSettings
             {EmitTypeInformation = EmitTypeInformation.Never};
     }
