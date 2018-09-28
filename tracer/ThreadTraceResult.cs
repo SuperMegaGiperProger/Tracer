@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace tracer
 {
     [KnownType(typeof(ThreadTraceResult))]
-    [DataContract]
+    [DataContract(Name = "thread")]
     public class ThreadTraceResult
     {
         [DataMember(Name = "id")] public readonly int Id;

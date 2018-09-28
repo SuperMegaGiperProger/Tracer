@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace tracer
 {
     [KnownType(typeof(TraceResult))]
-    [DataContract]
+    [DataContract(Name = "root")]
     public class TraceResult
     {
         [DataMember(Name = "treads")]

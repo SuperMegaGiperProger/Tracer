@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace tracer
 {
     [KnownType(typeof(MethodTraceResult))]
-    [DataContract]
+    [DataContract(Name = "method")]
     public class MethodTraceResult
     {
         [DataMember(Name = "name")]
