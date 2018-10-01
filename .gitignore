@@ -1,3 +1,5 @@
 .idea
 tracer/bin
 tracer/obj
+tracerTests/bin
+tracerTests/obj
