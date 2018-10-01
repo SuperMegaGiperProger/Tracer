@@ -54,26 +54,18 @@ namespace tracerTests
             var threadResult2 = traceResult.ThreadTraceResults[1];
             Assert.Equal(thread1Id, threadResult1.Id);
             Assert.Equal(thread2Id, threadResult2.Id);
-            Assert.InRange(threadResult1.Time, time1 + time2, time1 + time2 + 1);
-            Assert.InRange(threadResult2.Time, time3, time3 + 1);
-            Assert.InRange(threadResult1.MethodTraceResults[0].Time, time1, time1 + 1);
+            Assert.True(threadResult1.Time >= time1 + time2);
+            Assert.True(threadResult2.Time >= time3);
+            Assert.True(threadResult1.MethodTraceResults[0].Time >= time1);
             Assert.Equal("tracingMethod1", threadResult1.MethodTraceResults[0].Name);
             Assert.Equal("tracerTests.TracerTests", threadResult1.MethodTraceResults[0].ClassName);
-            Assert.InRange(threadResult1.MethodTraceResults[0].MethodTraceResults[0].Time, time1 - time1/2, time1 - time1/2 + 1);
+            Assert.True(threadResult1.MethodTraceResults[0].MethodTraceResults[0].Time >= time1 - time1/2);
             Assert.Equal("tracingMethod2", threadResult1.MethodTraceResults[0].MethodTraceResults[0].Name);
             Assert.Equal("tracerTests.TracerTests", threadResult1.MethodTraceResults[0].MethodTraceResults[0].ClassName);
-            Assert.InRange(threadResult2.MethodTraceResults[0].Time, time3, time3 + 1);
+            Assert.True(threadResult2.MethodTraceResults[0].Time >= time3);
             Assert.Equal("tracingMethod2", threadResult2.MethodTraceResults[0].Name);
             Assert.Equal("tracerTests.TracerTests", threadResult2.MethodTraceResults[0].ClassName);
         }
-
-        // private HashSet<Pair<int, int> threadResults()
-        // {
-        //     var threadResults = new HashSet<Pair<int, int>>();
-        //     threadResults.Add(new Pair<int, int>(thread1Id, time1 + time2));
-        //     threadResults.Add(new Pair<int, int>(thread2Id, time3));
-        //     return threadResults;
-        // }
 
         private void tracingMethod1(int time)
         {
