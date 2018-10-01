@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
+        <AssemblyName>example</AssemblyName>
+        <RootNamespace>example</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Reference Include="tracer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\tracer\tracer\bin\Debug\netcoreapp2.1\tracer.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>

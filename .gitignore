@@ -3,3 +3,5 @@ tracer/bin
 tracer/obj
 tracerTests/bin
 tracerTests/obj
+example/bin
+example/obj
